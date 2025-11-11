@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="orange_primary">#FF6B35</color>
+    <color name="orange_dark">#E55A2B</color>
+    <color name="orange_light">#FF8C5A</color>
+    <color name="text_primary">#333333</color>
+    <color name="text_secondary">#666666</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="search_background">#FFFFFF</color>
+    <color name="icon_temperature">#E53935</color>
+    <color name="icon_weight">#FFB300</color>
+    <color name="icon_length">#43A047</color>
+    <color name="icon_speed">#E53935</color>
+    <color name="icon_currency">#43A047</color>
+    <color name="icon_time">#E53935</color>
+</resources>

@@ -3,8 +3,6 @@
 Projeto acadêmico da matéria Programação para Dispositivos Móveis
 Aplicativo que permite converter valores entre diferentes unidades de tempo, velocidade, peso, temperatura, distância e moedas
 
----
-
 ## Funcionalidades do Aplicativo
 
 - Todas as Activities monitoram alterações no campo de entrada usando TextWatcher, o que permite que as conversões sejam feitas em tempo real

@@ -33,3 +33,5 @@ Aplicativo que permite converter valores entre diferentes unidades de tempo, vel
 
 - ArrayAdapter conecta arrays de unidades aos Spinners
 - Cada Spinner exibe uma lista de opções e mantém um item selecionado por padrão
+
+- Vídeo de demonstração: https://youtube.com/shorts/vF2FtqBl84w

@@ -28,7 +28,7 @@ Aplicativo que permite converter valores entre diferentes unidades de tempo, vel
   1. realizarConversao(): pega o valor digitado, as unidades selecionadas (de origem e destino), chama o metodo de converter e atualiza o resultado na tela
   2. converter(valor, origem, destino): faz a conversão da categoria (tempo, velocidade, peso, etc...) 
 
-- ArrayAdapter conecta os arrays de unidades aos Spinners
+- ArrayAdapter para conectar os arrays de unidades aos Spinners
 - Cada Spinner exibe uma lista de opções e mantém um item selecionado por padrão
 
 - Vídeo de demonstração: https://youtube.com/shorts/vF2FtqBl84w

@@ -2,10 +2,11 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -20,7 +21,6 @@
             android:paddingTop="8dp"
             android:paddingBottom="16dp">
 
-            <!-- Título -->
             <TextView
                 android:id="@+id/tvTitulo"
                 android:layout_width="0dp"
@@ -39,7 +39,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Conteúdo Principal - Grid de Cards -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -50,7 +49,6 @@
             android:layout_height="wrap_content"
             android:padding="16dp">
 
-            <!-- Guideline vertical central para dividir em 2 colunas -->
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guidelineVertical"
                 android:layout_width="wrap_content"
@@ -58,7 +56,6 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.5" />
 
-            <!-- Guideline horizontal para linha 1 -->
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guidelineLinha1"
                 android:layout_width="wrap_content"
@@ -66,7 +63,6 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.0" />
 
-            <!-- Guideline horizontal para linha 2 -->
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guidelineLinha2"
                 android:layout_width="wrap_content"
@@ -74,7 +70,6 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.33" />
 
-            <!-- Guideline horizontal para linha 3 -->
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guidelineLinha3"
                 android:layout_width="wrap_content"
@@ -82,7 +77,6 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.66" />
 
-            <!-- Card Temperatura - Linha 1, Coluna 1 -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardTemperatura"
                 android:layout_width="0dp"
@@ -128,7 +122,6 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Card Peso - Linha 1, Coluna 2 -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardPeso"
                 android:layout_width="0dp"
@@ -174,7 +167,6 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Card Distância - Linha 2, Coluna 1 -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardDistancia"
                 android:layout_width="0dp"
@@ -220,7 +212,6 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Card Velocidade - Linha 2, Coluna 2 -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardVelocidade"
                 android:layout_width="0dp"
@@ -266,7 +257,6 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Card Tempo - Linha 3, Coluna 1 -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardTempo"
                 android:layout_width="0dp"
@@ -312,7 +302,6 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Card Moeda - Linha 3, Coluna 2 -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardMoeda"
                 android:layout_width="0dp"

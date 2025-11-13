@@ -1,4 +1,4 @@
-package com.example.conversordeunidades;
+package com.example.conversordeunidades.activities;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,46 +14,32 @@ import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class MoedaActivity extends AppCompatActivity {
+import com.example.conversordeunidades.R;
+
+public class TempoActivity extends AppCompatActivity {
     private EditText campoValorOrigem, campoValorDestino;
     private Spinner spinnerUnidadeOrigem, spinnerUnidadeDestino;
-    
-    // constantes estaticas: valores fixos que não mudam durante a execucao do programa
-    // static final: cria uma constante que pertence a classe, nao a instância, e nao pode ser alterada
-    // essas taxas de câmbio sao valores aproximados e fixos (em uma aplicacao real, deveriam vir de uma API)
-    private static final double TAXA_DOLAR = 5.0;
-    private static final double TAXA_EURO = 5.5;
-    private static final double TAXA_LIBRA = 6.3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        // EdgeToEdge: permite que o conteudo se estenda ate as bordas da tela.
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_conversor);
 
-        // ViewCompat.setOnApplyWindowInsetsListener: trata os window insets para evitar sobreposicao
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), new OnApplyWindowInsetsListener() {
-            @Override
-            public WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
-                Insets barrasDoSistema = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-                view.setPadding(barrasDoSistema.left, barrasDoSistema.top, barrasDoSistema.right, barrasDoSistema.bottom);
-                return insets;
-            }
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
         });
 
-        // getString: obtém strings do arquivo strings.xml
-        ((TextView) findViewById(R.id.tvTitle)).setText(getString(R.string.currency));
+        ((TextView) findViewById(R.id.tvTitle)).setText(getString(R.string.time));
         campoValorOrigem = findViewById(R.id.editTextFrom);
         campoValorDestino = findViewById(R.id.editTextTo);
         spinnerUnidadeOrigem = findViewById(R.id.spinnerFrom);
         spinnerUnidadeDestino = findViewById(R.id.spinnerTo);
 
-        // ArrayAdapter: conecta um array de dados com um Spinner
-        // setAdapter: popula o Spinner com os dados
-        // setSelection: define o item selecionado por padrao
-        String[] unidades = {"Real (BRL)", "Dólar (USD)", "Euro (EUR)", "Libra (GBP)"};
+        // ArrayAdapter
+        String[] unidades = {"Segundo (s)", "Minuto (min)", "Hora (h)", "Dia", "Semana", "Mês", "Ano"};
         android.widget.ArrayAdapter<String> adapter = new android.widget.ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, unidades);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -61,8 +47,7 @@ public class MoedaActivity extends AppCompatActivity {
         spinnerUnidadeDestino.setAdapter(adapter);
         spinnerUnidadeDestino.setSelection(1);
 
-        // TextWatcher: monitora mudancas no texto do EditText em tempo real
-        // afterTextChanged: aciona a conversao automaticamente quando o texto muda
+        // TextWatcher
         campoValorOrigem.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -74,8 +59,7 @@ public class MoedaActivity extends AppCompatActivity {
             }
         });
 
-        // OnItemSelectedListener: monitora quando o usuário seleciona um item no Spinner
-        // onItemSelected: recalcula a conversao quando a unidade muda
+        // Listener do AdapterView
         spinnerUnidadeOrigem.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
@@ -94,7 +78,6 @@ public class MoedaActivity extends AppCompatActivity {
             public void onNothingSelected(android.widget.AdapterView<?> parent) {}
         });
 
-        // finish: finaliza a Activity atual e retorna para a anterior
         findViewById(R.id.btnBack).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,11 +86,6 @@ public class MoedaActivity extends AppCompatActivity {
         });
     }
 
-    // realiza a conversao do valor digitado entre as moedas selecionadas
-    // getText: pega o texto do EditText
-    // Double.parseDouble: converte String para número decimal
-    // getSelectedItemPosition: retorna o índice do item selecionado no Spinner
-    // String.format: formata o número com 2 casas decimais ("%.2f")
     private void realizarConversao() {
         String texto = campoValorOrigem.getText().toString();
         if (texto.isEmpty()) {
@@ -116,33 +94,34 @@ public class MoedaActivity extends AppCompatActivity {
         }
         try {
             double valor = Double.parseDouble(texto);
-            double resultado = converterMoeda(valor, 
+            double resultado = converterTempo(valor, 
                 spinnerUnidadeOrigem.getSelectedItemPosition(), 
                 spinnerUnidadeDestino.getSelectedItemPosition());
-            campoValorDestino.setText(String.format("%.2f", resultado));
+            campoValorDestino.setText(String.format("%.4f", resultado));
         } catch (NumberFormatException e) {
             campoValorDestino.setText("");
         }
     }
 
-    // converte um valor de moeda entre moedas diferentes
-    // estrategia: converte primeiro para Real (unidade base), depois para a moeda destino
-    // origem: indice da moeda de origem (0=Real, 1=Dólar, 2=Euro, 3=Libra).
-    // destino: indice da moeda de destino
-    // as taxas de cambio são valores fixos armazenados em constantes (TAXA_DOLAR, TAXA_EURO, TAXA_LIBRA)
-    private double converterMoeda(double valor, int origem, int destino) {
-        double reais = valor;
+    private double converterTempo(double valor, int origem, int destino) {
+        double segundos = valor;
         switch (origem) {
-            case 1: reais = valor * TAXA_DOLAR; break; // Dolar para Real
-            case 2: reais = valor * TAXA_EURO; break; // Euro para Real
-            case 3: reais = valor * TAXA_LIBRA; break; // Libra para Real
+            case 1: segundos = valor * 60; break; // min -> s
+            case 2: segundos = valor * 3600; break; // h -> s
+            case 3: segundos = valor * 86400; break; // dia -> s
+            case 4: segundos = valor * 604800; break; // semana -> s
+            case 5: segundos = valor * 2592000; break; // mes -> s
+            case 6: segundos = valor * 31536000; break; // ano -> s
         }
         switch (destino) {
-            case 0: return reais; // Real
-            case 1: return reais / TAXA_DOLAR; // Real para Dolar
-            case 2: return reais / TAXA_EURO; // Real para Euro
-            case 3: return reais / TAXA_LIBRA; // Real para Libra
-            default: return reais;
+            case 0: return segundos; // s -> s
+            case 1: return segundos / 60; // s -> min
+            case 2: return segundos / 3600; // s -> h
+            case 3: return segundos / 86400; // s -> dia
+            case 4: return segundos / 604800; // s -> semana
+            case 5: return segundos / 2592000; // s -> mes
+            case 6: return segundos / 31536000; // s -> ano
+            default: return segundos;
         }
     }
 }

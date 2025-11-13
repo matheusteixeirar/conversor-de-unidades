@@ -1,4 +1,4 @@
-package com.example.conversordeunidades;
+package com.example.conversordeunidades.activities;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,39 +14,35 @@ import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class PesoActivity extends AppCompatActivity {
+import com.example.conversordeunidades.R;
+
+public class MoedaActivity extends AppCompatActivity {
     private EditText campoValorOrigem, campoValorDestino;
     private Spinner spinnerUnidadeOrigem, spinnerUnidadeDestino;
+    private static final double TAXA_DOLAR = 5.0;
+    private static final double TAXA_EURO = 5.5;
+    private static final double TAXA_LIBRA = 6.3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        // EdgeToEdge: permite que o conteudo se estenda ate as bordas da tela
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_conversor);
 
-        // ViewCompat.setOnApplyWindowInsetsListener: trata os window insets para evitar sobreposicao com barras do sistema
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), new OnApplyWindowInsetsListener() {
-            @Override
-            public WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
-                Insets barrasDoSistema = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-                view.setPadding(barrasDoSistema.left, barrasDoSistema.top, barrasDoSistema.right, barrasDoSistema.bottom);
-                return insets;
-            }
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
         });
 
-        // getString: pega strings do arquivo strings.xml
-        ((TextView) findViewById(R.id.tvTitle)).setText(getString(R.string.weight));
+        ((TextView) findViewById(R.id.tvTitle)).setText(getString(R.string.currency));
         campoValorOrigem = findViewById(R.id.editTextFrom);
         campoValorDestino = findViewById(R.id.editTextTo);
         spinnerUnidadeOrigem = findViewById(R.id.spinnerFrom);
         spinnerUnidadeDestino = findViewById(R.id.spinnerTo);
 
-        // ArrayAdapter: conecta um array de dados com um Spinner, fornecendo os itens para exibicao
-        // setAdapter: popula o Spinner com os dados do adapter
-        // setSelection: define qual item sera selecionado por padrao
-        String[] unidades = {"Quilograma (kg)", "Grama (g)", "Libra (lb)", "Tonelada (t)"};
+        // ArrayAdapter
+        String[] unidades = {"Real (BRL)", "Dólar (USD)", "Euro (EUR)", "Libra (GBP)"};
         android.widget.ArrayAdapter<String> adapter = new android.widget.ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, unidades);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -54,8 +50,7 @@ public class PesoActivity extends AppCompatActivity {
         spinnerUnidadeDestino.setAdapter(adapter);
         spinnerUnidadeDestino.setSelection(1);
 
-        // TextWatcher: monitora mudancas no texto do EditText em tempo real
-        // afterTextChanged: chamado apos o texto ser alterado, acionando a conversao automaticamente
+        // TextWatcher
         campoValorOrigem.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -67,8 +62,7 @@ public class PesoActivity extends AppCompatActivity {
             }
         });
 
-        // OnItemSelectedListener: monitora quando o usuario seleciona um item diferente no Spinner
-        // onItemSelected: chamado quando um item é selecionado, recalculando a conversao
+        // Listener do AdapterView
         spinnerUnidadeOrigem.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
@@ -87,7 +81,6 @@ public class PesoActivity extends AppCompatActivity {
             public void onNothingSelected(android.widget.AdapterView<?> parent) {}
         });
 
-        // finish: finaliza a Activity atual e retorna para a Activity anterior
         findViewById(R.id.btnBack).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,11 +89,6 @@ public class PesoActivity extends AppCompatActivity {
         });
     }
 
-    // realiza a conversao do valor digitado entre as unidades selecionadas
-    // getText: pega o texto do EditText
-    // Double.parseDouble: converte String para número decimal
-    // getSelectedItemPosition: retorna o indice do item selecionado no Spinner
-    // String.format: formata o número com 4 casas decimais ("%.4f")
     private void realizarConversao() {
         String texto = campoValorOrigem.getText().toString();
         if (texto.isEmpty()) {
@@ -109,32 +97,28 @@ public class PesoActivity extends AppCompatActivity {
         }
         try {
             double valor = Double.parseDouble(texto);
-            double resultado = converterPeso(valor, 
+            double resultado = converterMoeda(valor, 
                 spinnerUnidadeOrigem.getSelectedItemPosition(), 
                 spinnerUnidadeDestino.getSelectedItemPosition());
-            campoValorDestino.setText(String.format("%.4f", resultado));
+            campoValorDestino.setText(String.format("%.2f", resultado));
         } catch (NumberFormatException e) {
             campoValorDestino.setText("");
         }
     }
 
-    // converte um valor de peso entre unidades diferentes
-    // estrategia: converte primeiro para Quilograma (unidade base), depois para a unidade destino
-    // origem: indice da unidade de origem (0=Quilograma, 1=Grama, 2=Libra, 3=Tonelada)
-    // destino: indice da unidade de destino
-    private double converterPeso(double valor, int origem, int destino) {
-        double kg = valor;
+    private double converterMoeda(double valor, int origem, int destino) {
+        double reais = valor;
         switch (origem) {
-            case 1: kg = valor / 1000; break; // Grama para Quilograma
-            case 2: kg = valor * 0.453592; break; // Libra para Quilograma
-            case 3: kg = valor * 1000; break; // Tonelada para Quilograma
+            case 1: reais = valor * TAXA_DOLAR; break; // USD -> BRL
+            case 2: reais = valor * TAXA_EURO; break; // EUR -> BRL
+            case 3: reais = valor * TAXA_LIBRA; break; // GBP -> BRL
         }
         switch (destino) {
-            case 0: return kg; // Quilograma
-            case 1: return kg * 1000; // Quilograma para Grama
-            case 2: return kg / 0.453592; // Quilograma para Libra
-            case 3: return kg / 1000; // Quilograma para Tonelada
-            default: return kg;
+            case 0: return reais; // BRL -> BRL
+            case 1: return reais / TAXA_DOLAR; // BRL -> USD
+            case 2: return reais / TAXA_EURO; // BRL -> EUR
+            case 3: return reais / TAXA_LIBRA; // BRL -> GBP
+            default: return reais;
         }
     }
 }

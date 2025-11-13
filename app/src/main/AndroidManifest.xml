@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ConversorDeUnidades">
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,29 +21,29 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TemperaturaActivity"
+            android:name=".activities.TemperaturaActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".activities.MainActivity" />
         <activity
-            android:name=".PesoActivity"
+            android:name=".activities.PesoActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".activities.MainActivity" />
         <activity
-            android:name=".DistanciaActivity"
+            android:name=".activities.DistanciaActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".activities.MainActivity" />
         <activity
-            android:name=".VelocidadeActivity"
+            android:name=".activities.VelocidadeActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".activities.MainActivity" />
         <activity
-            android:name=".TempoActivity"
+            android:name=".activities.TempoActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".activities.MainActivity" />
         <activity
-            android:name=".MoedaActivity"
+            android:name=".activities.MoedaActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".activities.MainActivity" />
     </application>
 
 </manifest>
